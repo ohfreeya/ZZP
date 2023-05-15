@@ -23,7 +23,9 @@ body {
     text-align: center;
     transition: 0.25s;
 }
-
+.validation-input{
+    margin-bottom: 20px;
+}
 .validation-input input[type="text"],
 .validation-input input[type="password"] {
     border: 0;
@@ -43,7 +45,7 @@ body {
 }
 
 .validation-input span{
-    margin-bottom: 20px;
+    color: burlywood;
 }
 
 .box h1 {

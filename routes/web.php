@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,4 +23,10 @@ Route::controller(AccountController::class)->group(function () {
     Route::post('/login', 'authenticate')->name('login_auth'); // authenticate login account and password 
     Route::get('/register', 'register_page')->name('register_page'); // register page
     Route::post('/register',  'register')->name('register');  // store register info
+});
+// after login
+Route::middleware('auth')->group(function () {
+    Route::controller(HomeController::class)->group(function () {
+        Route::get('/home', 'index')->name('home');
+    });
 });

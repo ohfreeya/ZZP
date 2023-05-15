@@ -19,9 +19,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::controller(AccountController::class)->group(function () {
-    Route::get('/login', 'login')->name('login_page'); // login page
+    Route::get('/login', 'login')->name('login'); // login page
     Route::post('/login', 'authenticate')->name('login_auth'); // authenticate login account and password 
-    Route::get('/register', 'register_page')->name('register_page'); // register page
+    Route::get('/register', 'register_page')->name('register'); // register page
     Route::post('/register',  'register')->name('register');  // store register info
 });
 // after login

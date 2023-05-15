@@ -25,7 +25,7 @@
                     </div>
                     <span>
                         Already having account? 
-                        <a class="text-muted" href="{{ Route('login_page') }}">Login</a>
+                        <a class="text-muted" href="{{ Route('login') }}">Login</a>
                     </span>
                     <button class="send-btn" onclick="checkForm()">Register</button>
                 </form> 

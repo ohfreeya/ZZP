@@ -2,12 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 
 class AccountController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     * @param UserRepository $userRepository
+     * @return void
+     */
+
+    private $userRepository;
+
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
     //  login page
     public function login()
     {
@@ -22,8 +36,23 @@ class AccountController extends Controller
             'password' => 'required'
         ]);
 
-        // if (Hash::check($value, $hashedValue)) {
-        // }
+        // check user login from username
+        $checkFromName =  Auth::attempt(
+            [
+                'name' => $request->username,
+                'password' => $request->password
+            ]
+        );
+        //  check user login from email
+        $checkFromEmail =  Auth::attempt(
+            [
+                'email' => $request->username,
+                'password' => $request->password
+            ]
+        );
+        if ($checkFromEmail || $checkFromName) {
+            return Redirect::route('home');
+        }
 
         // validate failed
         return Redirect::to('login')
@@ -39,6 +68,7 @@ class AccountController extends Controller
     //  register account
     public  function register(Request $request)
     {
+        // validate input
         $request->validate(
             [
                 'username' => 'required',
@@ -52,6 +82,20 @@ class AccountController extends Controller
                 'password.required' => 'Password is required.',
             ]
         );
-        return view('Account.login')->with('message',['result' => 'success', 'message' => 'Registration successful!']);
+        $data = [
+            'name' => $request->username,
+            'email' => $request->email,
+            'password' => Hash::make($request->password)
+        ];
+
+        $user = $this->userRepository->create($data);
+
+        return view('Account.login')->with('message', ['result' => 'success', 'message' => 'Registration successful!']);
+    }
+    //  logout 
+    public function logout()
+    {
+        Auth::logout();
+        return Redirect::route('login');
     }
 }

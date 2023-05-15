@@ -79,6 +79,11 @@ body {
     background: #2ecc71
 }
 
+.side-bar{
+    position: fixed;
+    height: 100%;
+}
+
 .forgot {
     text-decoration: underline
 }
@@ -93,6 +98,10 @@ ul.social-network {
 ul.social-network li {
     display: inline;
     margin: 0 5px
+}
+
+.user-image{
+    box-shadow: 3px 3px 5px 1px #936a107a;
 }
 
 .social-network a.icoFacebook:hover {
@@ -145,4 +154,16 @@ a.socialIcon:hover,
     color: #fff;
     transition: all 0.8s;
     transition: all 0.8s
+}
+
+.nav-pills .nav-link.active {
+    background: none !important;
+}
+
+.nav .nav-link:hover i{
+    color: #0d6efd82 !important;
+}
+
+.nav .nav-link.active i{
+    color: #1f64db !important;
 }

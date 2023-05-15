@@ -4,14 +4,20 @@
     <div class="row justify-content-center h-100 align-items-center"> 
         <div class="col-md-6"> 
             <div class="card justify-content-center  align-items-center"> 
-                <form action="{{ Route('login_auth') }}" method="POST" class="box"> 
+                <form action="{{ Route('login_auth') }}" method="POST" class="box login-form"> 
                     @csrf
                     <h1>Login</h1> 
                     <p class="text-muted"> 
                         Please enter your login and password!
                     </p> 
-                    <input type="text" name="username" placeholder="Username or Email"> 
-                    <input type="password" name="password" placeholder="Password"> 
+                    <div class="validation-input">
+                        <input type="text" name="username" placeholder="Username or Email" value="{{old('username')}}"> 
+                        <span class="text-danger username-span">{{$errors->has('username') ? $errors->first('username') : ''}}</span>
+                    </div>
+                    <div class="validation-input">
+                        <input type="password" name="password" placeholder="Password" value="{{old('password')}}"> 
+                        <span class="text-danger password-span">{{$errors->has('password')? $errors->first('password') : ''}}</span>
+                    </div>
                     <span>
                         <a class="forgot text-muted" href="#">Forgot password?</a> 
                         or
@@ -45,6 +51,23 @@
 @endsection
 @section('js')
 <script>
-
+    // check form inputs values by jquery
+    function sendForm() {
+        event.preventDefault();
+        var username = $('#username').val();
+        var password = $('#password').val();
+        var checkInput = '';
+        if (username == '') {
+            $('.username-span').text('Username is required');
+            checkInput = 'username';
+        }
+        if (password == '') {
+            $('.password-span').text('Password is required');
+            checkInput = 'password';
+        }
+        if (checkInput == '') {
+            $('.login-form').submit();
+        }
+    }
 </script>
 @endsection

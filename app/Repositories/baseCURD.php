@@ -43,6 +43,14 @@ abstract class baseCURD implements CURD
 
     public function setInstance($instance, $data): string | array
     {
-        return '';
+        if ($instance) {
+            foreach ($data as $key => $value) {
+                $instance->$key = $value;
+            }
+            $instance->save();
+            return $instance;
+        }
+
+        throw new \Exception('Create / Edit Instance Failed');
     }
 }

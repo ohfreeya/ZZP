@@ -28,11 +28,12 @@
 </body>
 </html>
 <script>
+    @if(isset($message))
     const Toast = Swal.mixin({
         toast: true,
         position: 'top',
         showConfirmButton: false,
-        timer: 3000,
+        timer: 1000,
         timerProgressBar: true,
         didOpen: (toast) => {
             toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -41,7 +42,8 @@
     })
 
     Toast.fire({
-        icon: 'success',
-        title: 'Signed in successfully'
+        icon: '{{$message['result'] == 'success' ? 'success' : 'error'}}',
+        title: '{{$message['message']}}'
     })
+    @endif
 </script>

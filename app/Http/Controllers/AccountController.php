@@ -52,5 +52,6 @@ class AccountController extends Controller
                 'password.required' => 'Password is required.',
             ]
         );
+        return view('Account.login')->with('message',['result' => 'success', 'message' => 'Registration successful!']);
     }
 }

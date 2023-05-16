@@ -12,7 +12,7 @@ class UserRepository extends baseCURD
         return User::class;
     }
 
-    // exists -> update, not exists -> create
+    // exists -> update, not exists -> create google
     public function googleUpdateOrCreate($data): User
     {
         $user = User::updateOrCreate(
@@ -24,6 +24,23 @@ class UserRepository extends baseCURD
                 'password' => uniqid('user-', true),
                 'email' => $data->email . '',
                 'google_id' => $data->id,
+            ]
+        );
+        return $user;
+    }
+
+    // exists -> update, not exists -> create facebook
+    public function facebookUpdateOrCreate($data): User
+    {
+        $user = User::updateOrCreate(
+            [
+                'email' => $data->email. '',
+            ],
+            [
+                'name' => 'facebook-'. random_int(100000000, 999999999),
+                'password' => uniqid('user-', true),
+                'email' => $data->email. '',
+                'facebook_id' => $data->id,
             ]
         );
         return $user;

@@ -28,6 +28,8 @@ Route::controller(AccountController::class)->group(function () {
 Route::controller(AuthController::class)->group(function () {
     Route::get('/auth/google', 'redirectToGoogle')->name('auth.google'); // google auth
     Route::get('/auth/google/callback', 'handleGoogleCallback')->name('auth.google.callback'); // google auth callback
+    // Route::get('/auth/facebook', 'redirectToFacebook')->name('auth.facebook'); // facebook
+    // Route::get('/auth/facebook/callback', 'handleFacebookCallback')->name('auth.facebook.callback'); // facebook auth callback
 });
 // after login
 Route::middleware('auth')->group(function () {

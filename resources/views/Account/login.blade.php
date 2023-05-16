@@ -26,11 +26,11 @@
                     <button class="send-btn" type="button" onclick="sendForm()">Login</button>
                     <div class="col-md-12"> 
                         <ul class="social-network social-circle"> 
-                            <li>
-                                <a href="#" class="icoFacebook" title="Facebook">
+                            {{-- <li>
+                                <a href="{{Route('auth.facebook')}}" class="icoFacebook" title="Facebook">
                                     <i class="fab fa-facebook-f"></i>
                                 </a>
-                            </li> 
+                            </li>  --}}
                             <li>
                                 <a href="#" class="icoTwitter" title="Twitter">
                                     <i class="fab fa-twitter"></i>

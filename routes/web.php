@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,9 +21,14 @@ Route::get('/', function () {
 });
 Route::controller(AccountController::class)->group(function () {
     Route::get('/login', 'login')->name('login'); // login page
-    Route::post('/login', 'authenticate')->name('login_auth'); // authenticate login account and password 
+    Route::post('/login', 'authenticate')->name('auth.login'); // authenticate login account and password 
     Route::get('/register', 'register_page')->name('register'); // register page
     Route::post('/register',  'register')->name('register');  // store register info
+});
+Route::controller(AuthController::class)->group(function () {
+    Route::get('/google', 'google_auth')->name('google'); // google auth
+    Route::get('/auth/google', 'redirectToGoogle')->name('auth.google'); // google auth
+    Route::get('/auth/google/callback', 'handleGoogleCallback')->name('auth.google.callback'); // google auth
 });
 // after login
 Route::middleware('auth')->group(function () {

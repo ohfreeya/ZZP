@@ -4,7 +4,7 @@
     <div class="row justify-content-center h-100 align-items-center"> 
         <div class="col-md-6"> 
             <div class="card justify-content-center  align-items-center"> 
-                <form action="{{ Route('login_auth') }}" method="POST" class="box login-form"> 
+                <form action="{{ Route('auth.login') }}" method="POST" class="box login-form"> 
                     @csrf
                     <h1>Login</h1> 
                     <p class="text-muted"> 

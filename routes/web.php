@@ -26,9 +26,8 @@ Route::controller(AccountController::class)->group(function () {
     Route::post('/register',  'register')->name('register');  // store register info
 });
 Route::controller(AuthController::class)->group(function () {
-    Route::get('/google', 'google_auth')->name('google'); // google auth
     Route::get('/auth/google', 'redirectToGoogle')->name('auth.google'); // google auth
-    Route::get('/auth/google/callback', 'handleGoogleCallback')->name('auth.google.callback'); // google auth
+    Route::get('/auth/google/callback', 'handleGoogleCallback')->name('auth.google.callback'); // google auth callback
 });
 // after login
 Route::middleware('auth')->group(function () {

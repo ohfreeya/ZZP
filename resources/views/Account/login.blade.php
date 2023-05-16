@@ -37,7 +37,7 @@
                                 </a>
                             </li> 
                             <li>
-                                <a href="#" class="icoGoogle" title="Google +">
+                                <a href="{{Route('auth.google')}}" class="icoGoogle" title="Google +">
                                     <i class="fab fa-google-plus"></i>
                                 </a>
                             </li> 

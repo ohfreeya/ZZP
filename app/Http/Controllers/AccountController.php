@@ -89,7 +89,10 @@ class AccountController extends Controller
 
         $user = $this->userRepository->create($data);
 
-        return Redirect::route('login')->with('message', ['result' => 'success', 'message' => 'Registration successful!']);
+        if ($user) {
+            return Redirect::route('login')->with('message', ['result' => 'success', 'message' => 'Registration successful!']);
+        }
+        return Redirect::route('register')->with('message', ['result' => 'error', 'message' => 'Registration failed!']);
     }
     //  logout 
     public function logout()
@@ -108,7 +111,7 @@ class AccountController extends Controller
     public function verifyEmail(Request $request)
     {
         $request->validate([
-            'email' =>'required|email'
+            'email' => 'required|email'
         ]);
 
         // check email is existed
@@ -116,7 +119,6 @@ class AccountController extends Controller
 
         // send password reset link by email 
         if ($user) {
-            
         }
 
         return back()->with('message', ['result' => 'error', 'message' => 'Email not existed!']);

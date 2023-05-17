@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\UserRepository;
+use App\Services\AccountService;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use Auth;
@@ -11,11 +11,11 @@ use Exception;
 
 class AuthController extends Controller
 {
-    private $userRepository;
 
-    public function __construct(UserRepository $userRepository)
-    {
-        $this->userRepository = $userRepository;
+    public function __construct(
+        private AccountService $accountService
+    ) {
+        $this->accountService  = $accountService;
     }
 
     // google auth page redirect
@@ -29,7 +29,9 @@ class AuthController extends Controller
     {
         $googleUser = Socialite::driver('google')->stateless()->user();
 
-        $user = $this->userRepository->googleUpdateOrCreate($googleUser);
+        $compareField  = ['email' => $googleUser->email];
+
+        $user = $this->accountService->updateOrCreate($compareField, $googleUser);
 
         Auth::login($user, true);
 

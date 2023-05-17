@@ -55,8 +55,7 @@ class AccountController extends Controller
         }
 
         // validate failed
-        return Redirect::to('login')
-            ->withErrors(['fail' => 'Email or password is wrong!']);
+        return Redirect::route('login')->with('message', ['result' => 'error', 'message' => 'Email or password is wrong!']);
     }
 
     //  register page
@@ -90,12 +89,36 @@ class AccountController extends Controller
 
         $user = $this->userRepository->create($data);
 
-        return view('Account.login')->with('message', ['result' => 'success', 'message' => 'Registration successful!']);
+        return Redirect::route('login')->with('message', ['result' => 'success', 'message' => 'Registration successful!']);
     }
     //  logout 
     public function logout()
     {
         Auth::logout();
         return Redirect::route('login');
+    }
+
+    // forgot password page
+    public function forgotPassword()
+    {
+        return view('Account.forgot');
+    }
+
+    // verify email and send password reset link
+    public function verifyEmail(Request $request)
+    {
+        $request->validate([
+            'email' =>'required|email'
+        ]);
+
+        // check email is existed
+        $user = $this->userRepository->findByEmail($request->email);
+
+        // send password reset link by email 
+        if ($user) {
+            
+        }
+
+        return back()->with('message', ['result' => 'error', 'message' => 'Email not existed!']);
     }
 }

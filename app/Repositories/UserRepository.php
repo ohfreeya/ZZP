@@ -45,4 +45,16 @@ class UserRepository extends baseCURD
         );
         return $user;
     }
+
+    // find user by email
+    public function findByEmail($email)
+    {
+        $user = User::where('email', $email)->first();
+        
+        if($user) {
+            return $user;
+        }
+        
+        return NULL;
+    }
 }

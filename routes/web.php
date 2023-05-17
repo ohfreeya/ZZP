@@ -24,6 +24,8 @@ Route::controller(AccountController::class)->group(function () {
     Route::post('/login', 'authenticate')->name('auth.login'); // authenticate login account and password 
     Route::get('/register', 'register_page')->name('register'); // register page
     Route::post('/register',  'register')->name('register');  // store register info
+    Route::get('/forgot', 'forgotPassword')->name('forgot'); // forgot password page
+    Route::post('/verify/email', 'verifyEmail')->name('verify.email'); // verify email and send password reset link
 });
 Route::controller(AuthController::class)->group(function () {
     Route::get('/auth/google', 'redirectToGoogle')->name('auth.google'); // google auth

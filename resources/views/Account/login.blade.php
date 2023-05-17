@@ -19,7 +19,7 @@
                         <span class="password-span">{{$errors->has('password')? $errors->first('password') : ''}}</span>
                     </div>
                     <span>
-                        <a class="forgot text-muted" href="#">Forgot password?</a> 
+                        <a class="forgot text-muted" href="{{ Route('forgot') }}">Forgot password?</a> 
                         or
                         <a class="text-muted" href="{{ Route('register') }}">register</a>
                     </span>

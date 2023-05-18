@@ -7,7 +7,9 @@ use App\Services\AccountService;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use Auth;
+use Str;
 use Exception;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -29,9 +31,18 @@ class AuthController extends Controller
     {
         $googleUser = Socialite::driver('google')->stateless()->user();
 
-        $compareField  = ['email' => $googleUser->email];
+        $user = $this->accountService->getData('user', 'email', $googleUser->getEmail(), 'first');
 
-        $user = $this->accountService->updateOrCreate($compareField, $googleUser);
+        if(!$user){
+            $data = [
+                'google_id' => $googleUser->getId(),
+                'email' => $googleUser->getEmail(),
+                'name' => 'google-' . Str::random(8),
+                'password' => Hash::make(Str::random(8))
+            ];
+            $compareField  = ['email' => $googleUser->email];
+            $user = $this->accountService->updateOrCreate($compareField, $data);
+        }
 
         Auth::login($user, true);
 

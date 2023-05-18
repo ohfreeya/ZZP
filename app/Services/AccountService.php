@@ -37,12 +37,12 @@ class AccountService
         return $user;
     }
 
-    public function getData($model , $fieldName, $value, $cacheType)
+    public function getData($model, $fieldName, $value, $cacheType)
     {
-        if($model === 'user') {
+        if ($model === 'user') {
             $user = $this->userRepository->getDataFromSingleField($fieldName, $value, $cacheType);
         }
-        if($model === 'reset_password') {
+        if ($model === 'reset_password') {
             $user = $this->resetPasswordRepository->getDataFromSingleField($fieldName, $value, $cacheType);
         }
         return $user;
@@ -51,7 +51,7 @@ class AccountService
     // remove duplicates reset info
     public function deleteDuplicateResetInfo($datas)
     {
-        foreach($datas as $data){
+        foreach ($datas as $data) {
             $this->resetPasswordRepository->delete($data->id);
         }
     }

@@ -90,7 +90,7 @@ class AccountController extends Controller
             'password' => Hash::make($request->password)
         ];
 
-        $user = $this->accountService->create('User', $data);
+        $user = $this->accountService->create('user', $data);
 
         if ($user) {
             return Redirect::route('login')->with('message', ['result' => 'success', 'message' => 'Registration successful!']);
@@ -118,7 +118,7 @@ class AccountController extends Controller
         ]);
 
         // check email is existed
-        $user = $this->accountService->getData('user', 'email', $request->email , 'first');
+        $user = $this->accountService->getData('user', 'email', $request->email, 'first');
 
         if ($user) {
             // generate token
@@ -126,7 +126,7 @@ class AccountController extends Controller
             $token  = Hash::make($token);
 
             // delete duplicates reset records
-            $duplicate = $this->accountService->getData('reset_password' ,'email', $request->email, 'get');
+            $duplicate = $this->accountService->getData('reset_password', 'email', $request->email, 'get');
             if ($duplicate) {
                 $this->accountService->deleteDuplicateResetInfo($duplicate);
             }
@@ -155,13 +155,13 @@ class AccountController extends Controller
 
         return back()->with('message', ['result' => 'error', 'message' => 'Email not existed!']);
     }
-    
+
     // notice user to recive email
     public function checkEmail()
     {
         return view('Account.check_email');
     }
-    
+
     // reset password page
     public function resetPassword($token)
     {
@@ -176,7 +176,7 @@ class AccountController extends Controller
             'confirm' => 'required',
         ]);
 
-        $user = $this->accountService->getData('reset_password', 'token',$token, 'first');
+        $user = $this->accountService->getData('reset_password', 'token', $token, 'first');
 
         if (!$user) {
             return back()->with('message', ['result' => 'error', 'message' => 'Token not found!']);

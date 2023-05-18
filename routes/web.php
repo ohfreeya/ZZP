@@ -26,7 +26,9 @@ Route::controller(AccountController::class)->group(function () {
     Route::post('/register',  'register')->name('register');  // store register info
     Route::get('/forgot', 'forgotPassword')->name('forgot'); // forgot password page
     Route::post('/verify/email', 'verifyEmail')->name('verify.email'); // verify email and send password reset link
-    Route::post('/reset/{token}','resetPassword')->name('reset'); // reset password
+    Route::get('/check','checkEmail')->name('check.email'); // notice user to receive reset link in email
+    Route::get('/reset/{token}','resetPassword')->name('reset'); // reset password page
+    Route::post('/reset/{token}','storeNewPassword')->name('store.reset'); // reset password page
 });
 Route::controller(AuthController::class)->group(function () {
     Route::get('/auth/google', 'redirectToGoogle')->name('auth.google'); // google auth

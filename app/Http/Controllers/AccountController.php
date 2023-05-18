@@ -120,30 +120,30 @@ class AccountController extends Controller
         // check email is existed
         $user = $this->accountService->getData('user', $request->email);
 
-        // generate token
-        $token = Str::random(60);
-        $token  = Hash::make($token);
-
-        // store the token and expire time
-        $this->accountService->create(
-            'reset_password',
-            [
-                'email' => $request->email,
-                'token' => $token,
-                'account_id' => $user->id,
-                'expired_at' => Carbon::now()->addMinute()->format('Y-m-d H:i:s')
-
-            ]
-        );
-
-        // prepare parameter to send email
-        $data = [
-            'reset_token' => $token,
-            'reset_link' => 'http://' . config('app.url') . '/reset?token=' . $token
-        ];
-
-        // send password reset link by email 
         if ($user) {
+            // generate token
+            $token = Str::random(60);
+            $token  = Hash::make($token);
+
+            // store the token and expire time
+            $this->accountService->create(
+                'reset_password',
+                [
+                    'email' => $request->email,
+                    'token' => $token . '',
+                    'account_id' => $user->id,
+                    'expired_at' => Carbon::now()->addMinute()->format('Y-m-d H:i:s')
+
+                ]
+            );
+
+            // prepare parameter to send email
+            $data = [
+                'reset_token' => $token,
+                'reset_link' => 'http://' . config('app.url') . '/reset?token=' . $token
+            ];
+
+            // send password reset link by email 
             Mail::to('s1061628@gm.pu.edu.tw')->send(new ResetPWDEmail($data));
         }
 
@@ -165,7 +165,7 @@ class AccountController extends Controller
         }
 
         // check token isn't expired
-        if($user->expired_at > Carbon::now()->format('Y-m-d H:i:s')){{
+        if ($user->expired_at > Carbon::now()->format('Y-m-d H:i:s')) {
 
             $data = [
                 'password' => Hash::make($request->password)

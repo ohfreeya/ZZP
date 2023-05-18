@@ -10,8 +10,9 @@ class ResetPassword extends Model
     use HasFactory;
 
     protected $fillable = [
+        'email',
         'token',
         'account_id',
         'expires_at',
-    ]
+    ];
 }

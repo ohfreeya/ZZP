@@ -15,4 +15,9 @@ class ResetPassword extends Model
         'account_id',
         'expires_at',
     ];
+
+    public function getUser()
+    {
+        return $this->belongsTo(User::class, 'account_id', 'id');
+    }
 }

@@ -118,12 +118,18 @@ class AccountController extends Controller
         ]);
 
         // check email is existed
-        $user = $this->accountService->getData('user', $request->email);
+        $user = $this->accountService->getData('user', 'email', $request->email , 'first');
 
         if ($user) {
             // generate token
             $token = Str::random(60);
             $token  = Hash::make($token);
+
+            // delete duplicates reset records
+            $duplicate = $this->accountService->getData('reset_password' ,'email', $request->email, 'get');
+            if ($duplicate) {
+                $this->accountService->deleteDuplicateResetInfo($duplicate);
+            }
 
             // store the token and expire time
             $this->accountService->create(
@@ -132,52 +138,68 @@ class AccountController extends Controller
                     'email' => $request->email,
                     'token' => $token . '',
                     'account_id' => $user->id,
-                    'expired_at' => Carbon::now()->addMinute()->format('Y-m-d H:i:s')
-
+                    'expired_at' => Carbon::now('Asia/Taipei')->addMinute()->format('Y-m-d H:i:s')
                 ]
             );
 
             // prepare parameter to send email
             $data = [
                 'reset_token' => $token,
-                'reset_link' => 'http://' . config('app.url') . '/reset?token=' . $token
+                'reset_link' => Route('reset', ['token' => $token])
             ];
 
             // send password reset link by email 
-            Mail::to('s1061628@gm.pu.edu.tw')->send(new ResetPWDEmail($data));
+            Mail::to($request->email)->send(new ResetPWDEmail($data));
+            return Redirect::route('check.email');
         }
 
         return back()->with('message', ['result' => 'error', 'message' => 'Email not existed!']);
     }
+    
+    // notice user to recive email
+    public function checkEmail()
+    {
+        return view('Account.check_email');
+    }
+    
+    // reset password page
+    public function resetPassword($token)
+    {
+        return view('Account.reset_password', ['token' => $token]);
+    }
 
     // reset password
-    public function resetPassword(Request $request)
+    public function storeNewPassword(Request $request, $token)
     {
         $request->validate([
-            'token' => 'required',
-            'password' => 'required'
+            'password' => 'required',
+            'confirm' => 'required',
         ]);
 
-        $user = $this->accountService->getData('token', $request->token);
+        $user = $this->accountService->getData('reset_password', 'token',$token, 'first');
 
         if (!$user) {
             return back()->with('message', ['result' => 'error', 'message' => 'Token not found!']);
         }
 
         // check token isn't expired
-        if ($user->expired_at > Carbon::now()->format('Y-m-d H:i:s')) {
+        $now = Carbon::now()->timestamp;
+        $expired = Carbon::parse($user->expired_at)->timestamp;
+        if ($expired <= $now) {
 
             $data = [
-                'password' => Hash::make($request->password)
+                'name' => $user->getUser->name,
+                'email' => $user->email,
+                'password' => Hash::make($request['password'])
             ];
 
-            $user = $this->accountService->update($user->id, $data);
+            $user = $this->accountService->update($user->getUser->id, $data);
 
             if ($user) {
-                return back()->with('message', ['result' => 'success', 'message' => 'Password reset successful!']);
+                return Redirect::route('login')->with('message', ['result' => 'success', 'message' => 'Password reset successful!']);
             }
         }
 
-        return Redirect::route('forgot')->with('message', ['result' => 'error', 'message' => 'Password reset failed!']);
+        return Redirect::route('forgot')->with('message', ['result' => 'error', 'message' => 'Reset token expired!']);
     }
 }

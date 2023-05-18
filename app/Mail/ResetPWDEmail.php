@@ -42,6 +42,8 @@ class ResetPWDEmail extends Mailable
             view: 'Email.reset_pwd',
             with: [
                 // 'name' =>  'parameters.name'
+                'reset_token' => $this->data['reset_token'],
+                'reset_link' => $this->data['reset_link'],
             ],
         );
     }

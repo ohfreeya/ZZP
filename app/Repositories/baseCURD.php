@@ -27,7 +27,7 @@ abstract class baseCURD implements CURD
 
     public function update(int $id, array $data): string | array
     {
-        $instance = $this->app->make($this->modelClass);
+        $instance = $this->app->make($this->modelClass)->find($id);
         return $this->setInstance($instance, $data);
     }
 
@@ -54,10 +54,16 @@ abstract class baseCURD implements CURD
         throw new \Exception('Create / Edit Instance Failed');
     }
 
-    public function getDataFromSingleField($fieldName, $fieldValue)
+    public function getDataFromSingleField($fieldName, $fieldValue, $catchType)
     {
         $instance = $this->app->make($this->modelClass);
-        $data = $instance->where($fieldName, $fieldValue)->first();
+        if($catchType == 'first'){
+            $data = $instance->where($fieldName, $fieldValue)->first();
+        } else if($catchType == 'get'){
+            $data = $instance->where($fieldName, $fieldValue)->get();
+        } else {
+            $data = NULL;
+        }
         if ($data) {
             return $data;
         }

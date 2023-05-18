@@ -37,16 +37,22 @@ class AccountService
         return $user;
     }
 
-    public function getData($model, $value)
+    public function getData($model , $fieldName, $value, $cacheType)
     {
         if($model === 'user') {
-            $fieldName = 'email';
-            $user = $this->userRepository->getDataFromSingleField($fieldName, $value);
+            $user = $this->userRepository->getDataFromSingleField($fieldName, $value, $cacheType);
         }
         if($model === 'reset_password') {
-            $fieldName = 'token';
-            $user = $this->resetPasswordRepository->getDataFromSingleField($fieldName, $value);
+            $user = $this->resetPasswordRepository->getDataFromSingleField($fieldName, $value, $cacheType);
         }
         return $user;
+    }
+
+    // remove duplicates reset info
+    public function deleteDuplicateResetInfo($datas)
+    {
+        foreach($datas as $data){
+            $this->resetPasswordRepository->delete($data->id);
+        }
     }
 }

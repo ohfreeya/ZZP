@@ -22,6 +22,7 @@ Route::get('/', function () {
 Route::controller(AccountController::class)->group(function () {
     Route::get('/login', 'login')->name('login'); // login page
     Route::post('/login', 'authenticate')->name('auth.login'); // authenticate login account and password 
+    Route::get('/logout', 'logout')->name('logout'); // logout
     Route::get('/register', 'register_page')->name('register'); // register page
     Route::post('/register',  'register')->name('register');  // store register info
     Route::get('/forgot', 'forgotPassword')->name('forgot'); // forgot password page

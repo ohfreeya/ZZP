@@ -9,7 +9,7 @@
                     <h1>Forgot password</h1>
                     <div class="validation-input">
                         <input type="text" name="email" placeholder="email" id="email" value="{{old('email')}}">
-                        <span class="email-span">{{$errors->has('email') ? $errors->first('email') : ''}}</span>
+                        <span class="email-span">{{isset($errors) ? $errors->has('email') ? $errors->first('email') : '' : ''}}</span>
                     </div>
                     <span>
                         Back to  

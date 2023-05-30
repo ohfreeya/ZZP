@@ -12,11 +12,11 @@
                     </p> 
                     <div class="validation-input">
                         <input type="text" name="username" placeholder="Username or Email" value="{{old('username')}}"> 
-                        <span class="username-span">{{$errors->has('username') ? $errors->first('username') : ''}}</span>
+                        <span class="username-span">{{isset($errors) ? $errors->has('username') ? $errors->first('username') : '' : ''}}</span>
                     </div>
                     <div class="validation-input">
                         <input type="password" name="password" placeholder="Password" value="{{old('password')}}"> 
-                        <span class="password-span">{{$errors->has('password')? $errors->first('password') : ''}}</span>
+                        <span class="password-span">{{isset($errors) ? $errors->has('password')? $errors->first('password') : '' : ''}}</span>
                     </div>
                     <span>
                         <a class="forgot text-muted" href="{{ Route('forgot') }}">Forgot password?</a> 

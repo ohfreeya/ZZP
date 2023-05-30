@@ -89,7 +89,12 @@ class AccountController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password)
         ];
-
+        $checkExists = $this->accountService->getData('user', 'email', $request->email, 'first');
+        
+        if($checkExists){
+            return Redirect::route('register')->with('message', ['result' => 'error', 'message' => 'Email already existed!']);
+        }
+        
         $user = $this->accountService->create('user', $data);
 
         if ($user) {

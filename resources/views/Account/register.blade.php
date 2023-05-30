@@ -9,15 +9,15 @@
                     <h1>Register</h1>
                     <div class="validation-input">
                         <input type="text" name="username" placeholder="Username" id="username" value="{{old('username')}}">
-                        <span class="username-span">{{$errors->has('username') ? $errors->first('username') : ''}}</span>
+                        <span class="username-span">{{isset($errors) ? $errors->has('username') ? $errors->first('username') : '' : ''}}</span>
                     </div>
                     <div class="validation-input">
                         <input type="text" name="email" placeholder="email" id="email" value="{{old('email')}}">
-                        <span class="email-span">{{$errors->has('email') ? $errors->first('email') : ''}}</span>
+                        <span class="email-span">{{isset($errors) ? $errors->has('email') ? $errors->first('email') : '' : ''}}</span>
                     </div>
                     <div class="validation-input">
                         <input type="password" name="password" placeholder="Password" id="password" value="{{old('password')}}">
-                        <span class="password-span">{{$errors->has('password') ? $errors->first('password') : ''}}</span>
+                        <span class="password-span">{{isset($errors) ? $errors->has('password') ? $errors->first('password') : '' : ''}}</span>
                     </div>
                     <div class="validation-input">
                         <input type="password" name="confirm" placeholder="Confirm password" id="confirm">
